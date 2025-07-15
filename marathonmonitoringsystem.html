@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fun Run Event</title>
+  <style>
+    #countdown-box {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #222;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-family: Arial, sans-serif;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+    }
+
+    #countdown-box h4 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+    }
+
+    #countdown {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+<div id="countdown-box">
+  <h4>Countdown to the event:</h4>
+  <div id="countdown">Loading...</div>
+</div>
+
+<script>
+  function updateCountdown() {
+    const now = new Date();
+    const targetYear = now.getMonth() > 9 || (now.getMonth() === 9 && now.getDate() > 21) ? now.getFullYear() + 1 : now.getFullYear();
+    const targetDate = new Date(targetYear, 9, 21, 0, 0, 0); // October is month 9 (0-indexed)
+
+    const totalSeconds = Math.floor((targetDate - now) / 1000);
+
+    const monthsLeft = targetDate.getMonth() - now.getMonth() + 12 * (targetDate.getFullYear() - now.getFullYear());
+    const daysLeft = Math.floor((targetDate - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / (1000 * 60 * 60 * 24));
+    const hoursLeft = Math.floor((targetDate - now) / (1000 * 60 * 60)) % 24;
+    const minutesLeft = Math.floor((targetDate - now) / (1000 * 60)) % 60;
+    const secondsLeft = totalSeconds % 60;
+
+    document.getElementById('countdown').innerHTML =
+      `${monthsLeft} month${monthsLeft !== 1 ? 's' : ''}, ` +
+      `${daysLeft % 30} day${(daysLeft % 30 !== 1) ? 's' : ''}, ` +
+      `${hoursLeft} hour${hoursLeft !== 1 ? 's' : ''}, ` +
+      `${minutesLeft} minute${minutesLeft !== 1 ? 's' : ''}, ` +
+      `${secondsLeft} second${secondsLeft !== 1 ? 's' : ''}`;
+  }
+
+  updateCountdown(); // initial call
+  setInterval(updateCountdown, 1000); // update every second
+</script>
+
+</body>
+</html>
